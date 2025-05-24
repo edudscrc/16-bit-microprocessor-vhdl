@@ -1,0 +1,7 @@
+v 4
+file . "ula_tb.vhd" "b96e393a7267d1b37ba0868a12bc4c69b4d45d52" "20250514002857.728":
+  entity ula_tb at 1( 0) + 0 on 15;
+  architecture a_ula_tb of ula_tb at 8( 93) + 0 on 16;
+file . "ula.vhd" "1e72ef6c795b37cdeac89d8b4017dc386e7ffe61" "20250514002459.116":
+  entity ula at 1( 0) + 0 on 13;
+  architecture a_ula of ula at 17( 389) + 0 on 14;
