@@ -49,6 +49,12 @@ architecture a_control_unit of control_unit is
 
     signal s_rom_address : unsigned(6 downto 0);
     signal s_rom_data : unsigned(15 downto 0);
+
+    signal s_opcode : unsigned(3 downto 0);
+    signal s_operand : unsigned(11 downto 0);
+
+    signal s_jump_enable : std_logic;
+    signal s_next_jump : unsigned(6 downto 0);
 begin
     pc_instance: program_counter port map (
         clock => clock,
@@ -72,10 +78,20 @@ begin
 
     rom_address <= s_rom_address;
     rom_data <= s_rom_data;
+    
+    -- opcode nos 4 bits MSB
+    s_opcode <= s_rom_data(15 downto 12);
+    s_operand <= s_rom_data(11 downto 0);
+
+    s_jump_enable <= '1' when s_opcode = "1111" else
+                     '0';
+    s_next_jump <= s_rom_data(6 downto 0);
 
     s_rom_address <= s_pc_data_out;
 
-    s_pc_data_in <= s_pc_data_out + 1;
+    s_pc_data_in <= s_next_jump when s_jump_enable = '1' else
+        
+    s_pc_data_out + 1;
 
     s_pc_write_enable <= '1' when s_state = '1' else
                      '0' when s_state = '0' else
