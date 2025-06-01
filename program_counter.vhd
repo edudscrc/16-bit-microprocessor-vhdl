@@ -1,6 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use iee.std_numeric.all;
+use ieee.numeric_std.all;
 
 entity program_counter is
     port (
@@ -18,9 +18,11 @@ begin
     process(clock, reset, write_enable)
     begin
         if reset='1' then
-            reg <= "000000";
-        elsif rising_edge(clock) then
-            reg <= data_in;
+            reg <= "0000000";
+        elsif write_enable='1' then
+            if rising_edge(clock) then
+                reg <= data_in;
+            end if;
         end if;
     end process;
 
