@@ -1,0 +1,28 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use iee.std_numeric.all;
+
+entity program_counter is
+    port (
+        clock : in std_logic;
+        reset : in std_logic;
+        write_enable : in std_logic;
+        data_in : in unsigned(6 downto 0);
+        data_out : out unsigned(6 downto 0)
+    );
+end entity;
+
+architecture a_program_counter of program_counter is
+    signal reg: unsigned(6 downto 0);
+begin
+    process(clock, reset, write_enable)
+    begin
+        if reset='1' then
+            reg <= "000000";
+        elsif rising_edge(clock) then
+            reg <= data_in;
+        end if;
+    end process;
+
+    data_out <= reg;
+end architecture;
