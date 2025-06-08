@@ -52,7 +52,7 @@ begin
 
     process
     begin
-        wait for 400 ns;
+        wait for 200 ns;
         wait;
     end process;
 end architecture;
