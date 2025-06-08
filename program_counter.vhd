@@ -7,8 +7,8 @@ entity program_counter is
         clock : in std_logic;
         reset : in std_logic;
         write_enable : in std_logic;
-        data_in : in unsigned(6 downto 0);
-        data_out : out unsigned(6 downto 0)
+        address_in : in unsigned(6 downto 0);
+        address_out : out unsigned(6 downto 0)
     );
 end entity;
 
@@ -21,10 +21,10 @@ begin
             reg <= "0000000";
         elsif write_enable='1' then
             if rising_edge(clock) then
-                reg <= data_in;
+                reg <= address_in;
             end if;
         end if;
     end process;
 
-    data_out <= reg;
+    address_out <= reg;
 end architecture;

@@ -5,8 +5,8 @@ use ieee.numeric_std.all;
 entity rom is
     port (
         clock : in std_logic;
-        address : in unsigned(6 downto 0);
-        data : out unsigned(15 downto 0)
+        address_in : in unsigned(6 downto 0);
+        data_out : out unsigned(15 downto 0)
     );
 end entity;
 
@@ -39,7 +39,7 @@ begin
     process(clock)
     begin
         if (rising_edge(clock)) then
-            data <= rom_content(to_integer(address));
+            data_out <= rom_content(to_integer(address_in));
         end if;
     end process;
 end architecture;

@@ -9,9 +9,7 @@ architecture a_control_unit_tb of control_unit_tb is
     component control_unit
         port (
             clock : in std_logic;
-            reset : in std_logic;
-            rom_address : out unsigned(6 downto 0);
-            rom_data : out unsigned(15 downto 0)
+            reset : in std_logic
         );
     end component;
 
@@ -19,15 +17,11 @@ architecture a_control_unit_tb of control_unit_tb is
     signal finished : std_logic := '0';
 
     signal clock, reset: std_logic;
-    signal rom_address : unsigned(6 downto 0);
-    signal rom_data : unsigned(15 downto 0);
 
 begin
     uut: control_unit port map(
         clock => clock,
-        reset => reset,
-        rom_address => rom_address,
-        rom_data => rom_data
+        reset => reset
     );
     
     reset_global: process
@@ -61,4 +55,4 @@ begin
         wait for 400 ns;
         wait;
     end process;
-end architecture;    
+end architecture;
