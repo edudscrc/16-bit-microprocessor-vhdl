@@ -9,7 +9,9 @@ architecture a_control_unit_tb of control_unit_tb is
     component control_unit
         port (
             clock : in std_logic;
-            reset : in std_logic
+            reset : in std_logic;
+
+            rom_data_out : out unsigned(15 downto 0)
         );
     end component;
 
@@ -18,10 +20,13 @@ architecture a_control_unit_tb of control_unit_tb is
 
     signal clock, reset: std_logic;
 
+    signal rom_data_out : unsigned(15 downto 0);
+
 begin
     uut: control_unit port map(
         clock => clock,
-        reset => reset
+        reset => reset,
+        rom_data_out => rom_data_out
     );
     
     reset_global: process

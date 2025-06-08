@@ -5,7 +5,9 @@ use ieee.numeric_std.all;
 entity control_unit is
     port (
         clock : in std_logic;
-        reset : in std_logic
+        reset : in std_logic;
+
+        rom_data_out : out unsigned(15 downto 0)
     );
 end entity;
 
@@ -73,7 +75,7 @@ begin
     -- opcode nos 4 bits MSB
     s_opcode <= s_rom_data_out(15 downto 12);
 
-    s_jump_enable <= '1' when s_opcode = "1111" else
+    s_jump_enable <= '1' when s_opcode = "1000" else
                      '0';
 
     s_jump_address <= s_rom_data_out(6 downto 0);
@@ -86,5 +88,7 @@ begin
     s_pc_write_enable <= '1' when s_state = '1' else
                      '0' when s_state = '0' else
                      '0';
+
+    rom_data_out <= s_rom_data_out;
 
 end architecture;
