@@ -35,14 +35,14 @@ architecture a_control_unit of control_unit is
             clock : in std_logic;
             reset : in std_logic;
 
-            state : out std_logic
+            state : out unsigned(1 downto 0)
         );
     end component;
 
     signal s_pc_address_in, s_pc_address_out : unsigned(6 downto 0);
     signal s_pc_write_enable : std_logic;
     
-    signal s_state : std_logic;
+    signal s_state : unsigned(1 downto 0);
 
     signal s_rom_address_in : unsigned(6 downto 0);
     signal s_rom_data_out : unsigned(15 downto 0);
@@ -85,9 +85,8 @@ begin
     s_pc_address_in <= s_jump_address when s_jump_enable = '1' else
                        s_pc_address_out + 1;
 
-    s_pc_write_enable <= '1' when s_state = '1' else
-                     '0' when s_state = '0' else
-                     '0';
+    s_pc_write_enable <= '1' when s_state = "01" else
+                         '0';
 
     rom_data_out <= s_rom_data_out;
 

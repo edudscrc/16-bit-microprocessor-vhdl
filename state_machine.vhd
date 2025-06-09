@@ -7,19 +7,22 @@ entity state_machine is
         clock : in std_logic;
         reset : in std_logic;
 
-        state : out std_logic
+        state : out unsigned(1 downto 0)
     );
 end entity;
 
 architecture a_state_machine of state_machine is
-    signal current_state : std_logic;
+    signal current_state : unsigned(1 downto 0);
 begin
     process(clock, reset)
     begin
         if reset = '1' then
-            current_state <= '0';
+            current_state <= "00";
         elsif rising_edge(clock) then
-            current_state <= not current_state;
+            if current_state = "10" then
+                current_state <= "00";
+            else
+                current_state <= current_state + 1;
         end if;
     end process;
 
