@@ -1,0 +1,25 @@
+A:  LD A, 5
+    MOV R2, A
+B:  ADDI A, 3
+    MOV R3, A
+C:  MOV A, R2
+    ADD A, R3
+    MOV R4, A
+D:  ADDI A, -1
+    MOV R4, A
+E:  JMP 0X14
+F:  LD A, 0
+    MOV R4, A
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+    NOP
+G:  MOV A, R4
+    MOV R2, A
+H:  JMP 0X4
+I:  LD A, 0
+    MOV R2, A

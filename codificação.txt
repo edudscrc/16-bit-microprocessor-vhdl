@@ -1,0 +1,16 @@
+Formato J
+
+NOP         0000 xxxxxxxxxxxx
+LD:         0001 cccccccccccc
+MOV A, Rn   0010 rrr xxxxxxxxx
+MOV Rn, A   0011 rrr xxxxxxxxx
+CMPI        0100 cccccccccccc
+ADD         0101 rrr xxxxxxxxx
+SUB         0110 rrr xxxxxxxxx
+ADDI        0111 cccccccccccc
+JMP         1000 xxxxx aaaaaaa
+
+c: imediato em complemento de 2
+r: registrador (o meu processador tem acumulador, logo não preciso diferenciar entre fonte e destino)
+x: ignora
+a: endereço absoluto do salto (a de address)
