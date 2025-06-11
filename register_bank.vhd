@@ -13,6 +13,12 @@ entity register_bank is
 
         data_write_in : in unsigned(15 downto 0);
 
+        reg_0_data : out unsigned(15 downto 0);
+        reg_1_data : out unsigned(15 downto 0);
+        reg_2_data : out unsigned(15 downto 0);
+        reg_3_data : out unsigned(15 downto 0);
+        reg_4_data : out unsigned(15 downto 0);
+
         data_out : out unsigned(15 downto 0)
     );
 end entity;
@@ -83,4 +89,11 @@ begin
                 data_out_reg_3 when reg_read_in = "011" else
                 data_out_reg_4 when reg_read_in = "100" else
                 "0000000000000000";
+
+    reg_0_data <= data_out_reg_0;
+    reg_1_data <= data_out_reg_1;
+    reg_2_data <= data_out_reg_2;
+    reg_3_data <= data_out_reg_3;
+    reg_4_data <= data_out_reg_4;
+    
 end architecture;

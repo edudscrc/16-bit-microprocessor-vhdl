@@ -23,6 +23,7 @@ begin
                 current_state <= "00";
             else
                 current_state <= current_state + 1;
+            end if;
         end if;
     end process;
 

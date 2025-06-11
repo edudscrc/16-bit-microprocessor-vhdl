@@ -23,6 +23,14 @@ entity register_bank_and_ula is
         flag_N : out std_logic;
         flag_V : out std_logic;
 
+        accumulator_data_out : out unsigned(15 downto 0);
+
+        reg_0_data : out unsigned(15 downto 0);
+        reg_1_data : out unsigned(15 downto 0);
+        reg_2_data : out unsigned(15 downto 0);
+        reg_3_data : out unsigned(15 downto 0);
+        reg_4_data : out unsigned(15 downto 0);
+
         alu_result_out : out unsigned(15 downto 0)
     );
 end entity;
@@ -38,6 +46,12 @@ architecture a_register_bank_and_ula of register_bank_and_ula is
             reg_read_in : in unsigned(2 downto 0);
 
             data_write_in : in unsigned(15 downto 0);
+
+            reg_0_data : out unsigned(15 downto 0);
+            reg_1_data : out unsigned(15 downto 0);
+            reg_2_data : out unsigned(15 downto 0);
+            reg_3_data : out unsigned(15 downto 0);
+            reg_4_data : out unsigned(15 downto 0);
 
             data_out : out unsigned(15 downto 0)
         );
@@ -76,6 +90,8 @@ architecture a_register_bank_and_ula of register_bank_and_ula is
     signal s_reg_bank_data_out : unsigned(15 downto 0);
     signal s_reg_bank_data_write_in : unsigned(15 downto 0);
 
+    signal s_reg_0_data, s_reg_1_data, s_reg_2_data, s_reg_3_data, s_reg_4_data : unsigned(15 downto 0);
+
 begin
     register_bank_instance: register_bank port map (
         clock => clock,
@@ -84,6 +100,11 @@ begin
         reg_write_in => reg_bank_reg_write_in,
         reg_read_in => reg_bank_reg_read_in,
         data_write_in => s_reg_bank_data_write_in,
+        reg_0_data => s_reg_0_data,
+        reg_1_data => s_reg_1_data,
+        reg_2_data => s_reg_2_data,
+        reg_3_data => s_reg_3_data,
+        reg_4_data => s_reg_4_data,
         data_out => s_reg_bank_data_out
     );
 
@@ -112,5 +133,13 @@ begin
     s_reg_bank_data_write_in <= s_alu_result_out;
 
     alu_result_out <= s_alu_result_out;
+
+    accumulator_data_out <= s_accumulator_data_out;
+
+    reg_0_data <= s_reg_0_data;
+    reg_1_data <= s_reg_1_data;
+    reg_2_data <= s_reg_2_data;
+    reg_3_data <= s_reg_3_data;
+    reg_4_data <= s_reg_4_data;
 
 end architecture;

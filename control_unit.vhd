@@ -9,6 +9,8 @@ entity control_unit is
 
         state_out : out unsigned(1 downto 0);
 
+        pc_address_out : out unsigned(6 downto 0);
+
         rom_data_out : out unsigned(15 downto 0)
     );
 end entity;
@@ -92,6 +94,7 @@ begin
 
     rom_data_out <= s_rom_data_out;
 
-    state_out = s_state;
+    state_out <= s_state;
+    pc_address_out <= s_pc_address_out;
 
 end architecture;

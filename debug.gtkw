@@ -1,0 +1,34 @@
+[*]
+[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
+[*] Wed Jun 11 02:20:37 2025
+[*]
+[dumpfile] "/home/edudscrc/repos/16-bit-microprocessor-vhdl/processor_tb.ghw"
+[dumpfile_mtime] "Wed Jun 11 02:18:52 2025"
+[dumpfile_size] 17336
+[savefile] "/home/edudscrc/repos/16-bit-microprocessor-vhdl/debug.gtkw"
+[timestart] 0
+[size] 2560 1356
+[pos] -2611 -411
+*-29.847515 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] top.
+[treeopen] top.processor_tb.
+[sst_width] 217
+[signals_width] 206
+[sst_expanded] 1
+[sst_vpaned_height] 414
+@28
+top.processor_tb.reset
+top.processor_tb.clock
+#{top.processor_tb.state[1:0]} top.processor_tb.state[1] top.processor_tb.state[0]
+@22
+#{top.processor_tb.pc_address_out[6:0]} top.processor_tb.pc_address_out[6] top.processor_tb.pc_address_out[5] top.processor_tb.pc_address_out[4] top.processor_tb.pc_address_out[3] top.processor_tb.pc_address_out[2] top.processor_tb.pc_address_out[1] top.processor_tb.pc_address_out[0]
+#{top.processor_tb.ir_data[15:0]} top.processor_tb.ir_data[15] top.processor_tb.ir_data[14] top.processor_tb.ir_data[13] top.processor_tb.ir_data[12] top.processor_tb.ir_data[11] top.processor_tb.ir_data[10] top.processor_tb.ir_data[9] top.processor_tb.ir_data[8] top.processor_tb.ir_data[7] top.processor_tb.ir_data[6] top.processor_tb.ir_data[5] top.processor_tb.ir_data[4] top.processor_tb.ir_data[3] top.processor_tb.ir_data[2] top.processor_tb.ir_data[1] top.processor_tb.ir_data[0]
+#{top.processor_tb.reg_0_data[15:0]} top.processor_tb.reg_0_data[15] top.processor_tb.reg_0_data[14] top.processor_tb.reg_0_data[13] top.processor_tb.reg_0_data[12] top.processor_tb.reg_0_data[11] top.processor_tb.reg_0_data[10] top.processor_tb.reg_0_data[9] top.processor_tb.reg_0_data[8] top.processor_tb.reg_0_data[7] top.processor_tb.reg_0_data[6] top.processor_tb.reg_0_data[5] top.processor_tb.reg_0_data[4] top.processor_tb.reg_0_data[3] top.processor_tb.reg_0_data[2] top.processor_tb.reg_0_data[1] top.processor_tb.reg_0_data[0]
+#{top.processor_tb.reg_1_data[15:0]} top.processor_tb.reg_1_data[15] top.processor_tb.reg_1_data[14] top.processor_tb.reg_1_data[13] top.processor_tb.reg_1_data[12] top.processor_tb.reg_1_data[11] top.processor_tb.reg_1_data[10] top.processor_tb.reg_1_data[9] top.processor_tb.reg_1_data[8] top.processor_tb.reg_1_data[7] top.processor_tb.reg_1_data[6] top.processor_tb.reg_1_data[5] top.processor_tb.reg_1_data[4] top.processor_tb.reg_1_data[3] top.processor_tb.reg_1_data[2] top.processor_tb.reg_1_data[1] top.processor_tb.reg_1_data[0]
+#{top.processor_tb.reg_2_data[15:0]} top.processor_tb.reg_2_data[15] top.processor_tb.reg_2_data[14] top.processor_tb.reg_2_data[13] top.processor_tb.reg_2_data[12] top.processor_tb.reg_2_data[11] top.processor_tb.reg_2_data[10] top.processor_tb.reg_2_data[9] top.processor_tb.reg_2_data[8] top.processor_tb.reg_2_data[7] top.processor_tb.reg_2_data[6] top.processor_tb.reg_2_data[5] top.processor_tb.reg_2_data[4] top.processor_tb.reg_2_data[3] top.processor_tb.reg_2_data[2] top.processor_tb.reg_2_data[1] top.processor_tb.reg_2_data[0]
+#{top.processor_tb.reg_3_data[15:0]} top.processor_tb.reg_3_data[15] top.processor_tb.reg_3_data[14] top.processor_tb.reg_3_data[13] top.processor_tb.reg_3_data[12] top.processor_tb.reg_3_data[11] top.processor_tb.reg_3_data[10] top.processor_tb.reg_3_data[9] top.processor_tb.reg_3_data[8] top.processor_tb.reg_3_data[7] top.processor_tb.reg_3_data[6] top.processor_tb.reg_3_data[5] top.processor_tb.reg_3_data[4] top.processor_tb.reg_3_data[3] top.processor_tb.reg_3_data[2] top.processor_tb.reg_3_data[1] top.processor_tb.reg_3_data[0]
+#{top.processor_tb.reg_4_data[15:0]} top.processor_tb.reg_4_data[15] top.processor_tb.reg_4_data[14] top.processor_tb.reg_4_data[13] top.processor_tb.reg_4_data[12] top.processor_tb.reg_4_data[11] top.processor_tb.reg_4_data[10] top.processor_tb.reg_4_data[9] top.processor_tb.reg_4_data[8] top.processor_tb.reg_4_data[7] top.processor_tb.reg_4_data[6] top.processor_tb.reg_4_data[5] top.processor_tb.reg_4_data[4] top.processor_tb.reg_4_data[3] top.processor_tb.reg_4_data[2] top.processor_tb.reg_4_data[1] top.processor_tb.reg_4_data[0]
+#{top.processor_tb.accumulator_data[15:0]} top.processor_tb.accumulator_data[15] top.processor_tb.accumulator_data[14] top.processor_tb.accumulator_data[13] top.processor_tb.accumulator_data[12] top.processor_tb.accumulator_data[11] top.processor_tb.accumulator_data[10] top.processor_tb.accumulator_data[9] top.processor_tb.accumulator_data[8] top.processor_tb.accumulator_data[7] top.processor_tb.accumulator_data[6] top.processor_tb.accumulator_data[5] top.processor_tb.accumulator_data[4] top.processor_tb.accumulator_data[3] top.processor_tb.accumulator_data[2] top.processor_tb.accumulator_data[1] top.processor_tb.accumulator_data[0]
+#{top.processor_tb.alu_result[15:0]} top.processor_tb.alu_result[15] top.processor_tb.alu_result[14] top.processor_tb.alu_result[13] top.processor_tb.alu_result[12] top.processor_tb.alu_result[11] top.processor_tb.alu_result[10] top.processor_tb.alu_result[9] top.processor_tb.alu_result[8] top.processor_tb.alu_result[7] top.processor_tb.alu_result[6] top.processor_tb.alu_result[5] top.processor_tb.alu_result[4] top.processor_tb.alu_result[3] top.processor_tb.alu_result[2] top.processor_tb.alu_result[1] top.processor_tb.alu_result[0]
+[pattern_trace] 1
+[pattern_trace] 0

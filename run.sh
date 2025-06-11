@@ -1,4 +1,4 @@
 ghdl -a *.vhd
-ghdl -e control_unit_tb
-ghdl -r control_unit_tb --wave=control_unit_tb.ghw
-gtkwave control_unit_tb.ghw
+ghdl -e processor_tb
+ghdl -r processor_tb --wave=processor_tb.ghw
+gtkwave processor_tb.ghw

@@ -7,6 +7,25 @@ entity processor is
         clock : in std_logic;
         reset : in std_logic;
 
+        state : out unsigned(1 downto 0);
+        ir_data : out unsigned(15 downto 0);
+
+        pc_address_out : out unsigned(6 downto 0);
+
+        reg_0_data : out unsigned(15 downto 0);
+        reg_1_data : out unsigned(15 downto 0);
+        reg_2_data : out unsigned(15 downto 0);
+        reg_3_data : out unsigned(15 downto 0);
+        reg_4_data : out unsigned(15 downto 0);
+
+        accumulator_data : out unsigned(15 downto 0);
+
+        flag_C : out std_logic;
+        flag_Z : out std_logic;
+        flag_N : out std_logic;
+        flag_V : out std_logic;
+
+        alu_result : out unsigned(15 downto 0)
     );
 end entity;
 
@@ -26,6 +45,12 @@ architecture a_processor of processor is
             flag_Z : out std_logic;
             flag_N : out std_logic;
             flag_V : out std_logic;
+            accumulator_data_out : out unsigned(15 downto 0);
+            reg_0_data : out unsigned(15 downto 0);
+            reg_1_data : out unsigned(15 downto 0);
+            reg_2_data : out unsigned(15 downto 0);
+            reg_3_data : out unsigned(15 downto 0);
+            reg_4_data : out unsigned(15 downto 0);
             alu_result_out : out unsigned(15 downto 0)
         );
     end component;
@@ -36,6 +61,7 @@ architecture a_processor of processor is
             reset : in std_logic;
 
             state_out : out unsigned(1 downto 0);
+            pc_address_out : out unsigned(6 downto 0);
 
             rom_data_out : out unsigned(15 downto 0)
         );
@@ -71,6 +97,10 @@ architecture a_processor of processor is
     signal s_alu_result_out : unsigned(15 downto 0);
     signal s_flag_C, s_flag_Z, s_flag_N, s_flag_V : std_logic;
 
+    signal s_accumulator_data_out : unsigned(15 downto 0);
+    signal s_pc_address_out : unsigned(6 downto 0);
+    signal s_reg_0_data, s_reg_1_data, s_reg_2_data, s_reg_3_data, s_reg_4_data : unsigned(15 downto 0);
+
 begin
     register_bank_and_ula_instance: register_bank_and_ula port map (
         clock => clock,
@@ -86,6 +116,12 @@ begin
         flag_Z => s_flag_Z,
         flag_N => s_flag_N,
         flag_V => s_flag_V,
+        accumulator_data_out => s_accumulator_data_out,
+        reg_0_data => s_reg_0_data,
+        reg_1_data => s_reg_1_data,
+        reg_2_data => s_reg_2_data,
+        reg_3_data => s_reg_3_data,
+        reg_4_data => s_reg_4_data,
         alu_result_out => s_alu_result_out
     );
 
@@ -93,6 +129,7 @@ begin
         clock => clock,
         reset => reset,
         state_out => s_state,
+        pc_address_out => s_pc_address_out,
         rom_data_out => s_rom_data_out
     );
 
@@ -116,7 +153,7 @@ begin
                 "100" when s_opcode = "0010" else -- MOV A, Rn
                 "101" when s_opcode = "0011" else -- MOV Rn, A
                 "110" when s_opcode = "0001" else -- LD A, I
-                "000";
+                "111";
     
     s_ir_write_enable <= '1' when s_state = "00" else
                          '0';
@@ -155,5 +192,20 @@ begin
 
     s_reg_bank_reg_write_in <= s_register_from_instruction when s_opcode = "0011" and s_state = "10" else -- MOV Rn, A
                                "000";
+
+    state <= s_state;
+    ir_data <= s_ir_data_out;
+    pc_address_out <= s_pc_address_out;
+    reg_0_data <= s_reg_0_data;
+    reg_1_data <= s_reg_1_data;
+    reg_2_data <= s_reg_2_data;
+    reg_3_data <= s_reg_3_data;
+    reg_4_data <= s_reg_4_data;
+    accumulator_data <= s_accumulator_data_out;
+    flag_C <= s_flag_C;
+    flag_Z <= s_flag_Z;
+    flag_N <= s_flag_N;
+    flag_V <= s_flag_V;
+    alu_result <= s_alu_result_out;
 
 end architecture;
