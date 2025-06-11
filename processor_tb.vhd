@@ -2,18 +2,14 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity control_unit_tb is
+entity processor_tb is
 end;
 
-architecture a_control_unit_tb of control_unit_tb is
-    component control_unit
+architecture a_processor_tb of processor_tb is
+    component processor is
         port (
             clock : in std_logic;
-            reset : in std_logic;
-
-            state_out : out unsigned(1 downto 0);
-
-            rom_data_out : out unsigned(15 downto 0)
+            reset : in std_logic
         );
     end component;
 
@@ -22,18 +18,12 @@ architecture a_control_unit_tb of control_unit_tb is
 
     signal clock, reset: std_logic;
 
-    signal state_out : unsigned(1 downto 0);
-
-    signal rom_data_out : unsigned(15 downto 0);
-
 begin
-    uut: control_unit port map(
+    uut: processor port map(
         clock => clock,
-        reset => reset,
-        state_out => state_out,
-        rom_data_out => rom_data_out
+        reset => reset
     );
-    
+
     reset_global: process
     begin
         reset <= '1';
@@ -65,4 +55,5 @@ begin
         wait for 200 ns;
         wait;
     end process;
+
 end architecture;

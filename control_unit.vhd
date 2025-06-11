@@ -7,6 +7,8 @@ entity control_unit is
         clock : in std_logic;
         reset : in std_logic;
 
+        state_out : out unsigned(1 downto 0);
+
         rom_data_out : out unsigned(15 downto 0)
     );
 end entity;
@@ -75,7 +77,7 @@ begin
     -- opcode nos 4 bits MSB
     s_opcode <= s_rom_data_out(15 downto 12);
 
-    s_jump_enable <= '1' when s_opcode = "1000" else
+    s_jump_enable <= '1' when s_opcode = "1000" and s_state = "10" else
                      '0';
 
     s_jump_address <= s_rom_data_out(6 downto 0);
@@ -85,9 +87,11 @@ begin
     s_pc_address_in <= s_jump_address when s_jump_enable = '1' else
                        s_pc_address_out + 1;
 
-    s_pc_write_enable <= '1' when s_state = "01" else
+    s_pc_write_enable <= '1' when s_state = "10" else
                          '0';
 
     rom_data_out <= s_rom_data_out;
+
+    state_out = s_state;
 
 end architecture;

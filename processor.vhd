@@ -4,6 +4,8 @@ use ieee.numeric_std.all;
 
 entity processor is
     port (
+        clock : in std_logic;
+        reset : in std_logic;
 
     );
 end entity;
@@ -33,34 +35,125 @@ architecture a_processor of processor is
             clock : in std_logic;
             reset : in std_logic;
 
+            state_out : out unsigned(1 downto 0);
+
             rom_data_out : out unsigned(15 downto 0)
         );
     end component;
 
-    signal blabla : std_logic;
+    component instruction_register is
+        port (
+            clock : in std_logic;
+            reset : in std_logic;
+            write_enable : in std_logic;
+            data_in : in unsigned(15 downto 0);
+            data_out : out unsigned(15 downto 0)
+        );
+    end component;
+
+    signal s_rom_data_out : unsigned(15 downto 0);
+    signal s_ir_data_out : unsigned(15 downto 0);
+    signal s_state : unsigned(1 downto 0);
+
+    signal s_ir_write_enable : std_logic;
+    signal s_reg_bank_write_enable : std_logic;
+    signal s_accumulator_write_enable : std_logic;
+    signal s_mux_immediate : std_logic;
+
+    signal s_opcode : unsigned(3 downto 0);
+    signal s_register_from_instruction : unsigned(2 downto 0);
+    signal s_immediate : unsigned(15 downto 0);
+    signal s_alu_op_selec : unsigned(2 downto 0);
+
+    signal s_reg_bank_reg_read_in : unsigned(2 downto 0);
+    signal s_reg_bank_reg_write_in : unsigned(2 downto 0);
+
+    signal s_alu_result_out : unsigned(15 downto 0);
+    signal s_flag_C, s_flag_Z, s_flag_N, s_flag_V : std_logic;
 
 begin
     register_bank_and_ula_instance: register_bank_and_ula port map (
-        clock => ,
-        reset => ,
-        reg_bank_write_enable => ,
-        accumulator_write_enable => ,
-        alu_op_selec => ,
-        mux_immediate => ,
-        reg_bank_reg_read_in => ,
-        reg_bank_reg_write_in => ,
-        immediate => ,
-        flag_C => ,
-        flag_Z => ,
-        flag_N => ,
-        flag_V => ,
-        alu_result_out => 
+        clock => clock,
+        reset => reset,
+        reg_bank_write_enable => s_reg_bank_write_enable,
+        accumulator_write_enable => s_accumulator_write_enable,
+        alu_op_selec => s_alu_op_selec,
+        mux_immediate => s_mux_immediate,
+        reg_bank_reg_read_in => s_reg_bank_reg_read_in,
+        reg_bank_reg_write_in => s_reg_bank_reg_write_in,
+        immediate => s_immediate,
+        flag_C => s_flag_C,
+        flag_Z => s_flag_Z,
+        flag_N => s_flag_N,
+        flag_V => s_flag_V,
+        alu_result_out => s_alu_result_out
     );
 
     control_unit_instance: control_unit port map (
-        clock => ,
-        reset => ,
-        rom_data_out => 
+        clock => clock,
+        reset => reset,
+        state_out => s_state,
+        rom_data_out => s_rom_data_out
     );
+
+    instruction_register_instance: instruction_register port map (
+        clock => clock,
+        reset => reset,
+        write_enable => s_ir_write_enable,
+        data_in => s_rom_data_out,
+        data_out => s_ir_data_out
+    );
+
+    s_opcode <= s_ir_data_out(15 downto 12);
+    s_register_from_instruction <= s_ir_data_out(11 downto 9);
+    s_immediate <= "1111" & s_ir_data_out(11 downto 0) when s_ir_data_out(11) = '1' else
+                   "0000" & s_ir_data_out(11 downto 0);
+
+    s_alu_op_selec <= "000" when s_opcode = "0101" else -- ADD A, Rn
+                "001" when s_opcode = "0110" else -- SUB A, Rn
+                "010" when s_opcode = "0111" else -- ADDI A, I
+                "011" when s_opcode = "0100" else -- CMPI A, I
+                "100" when s_opcode = "0010" else -- MOV A, Rn
+                "101" when s_opcode = "0011" else -- MOV Rn, A
+                "110" when s_opcode = "0001" else -- LD A, I
+                "000";
+    
+    s_ir_write_enable <= '1' when s_state = "00" else
+                         '0';
+
+    s_accumulator_write_enable <= '1' when s_opcode = "0101" and s_state = "10" else -- ADD A, Rn
+                                  '1' when s_opcode = "0110" and s_state = "10" else -- SUB A, Rn
+                                  '1' when s_opcode = "0111" and s_state = "10" else -- ADDI A, I
+                                  '0' when s_opcode = "0100" and s_state = "10" else -- CMPI A, I
+                                  '1' when s_opcode = "0010" and s_state = "10" else -- MOV A, Rn
+                                  '0' when s_opcode = "0011" and s_state = "10" else -- MOV Rn, A
+                                  '1' when s_opcode = "0001" and s_state = "10" else -- LD A, I
+                                  '0';
+
+    s_mux_immediate <= '0' when s_opcode = "0101" and s_state = "10" else -- ADD A, Rn
+                       '0' when s_opcode = "0110" and s_state = "10" else -- SUB A, Rn
+                       '1' when s_opcode = "0111" and s_state = "10" else -- ADDI A, I
+                       '1' when s_opcode = "0100" and s_state = "10" else -- CMPI A, I
+                       '0' when s_opcode = "0010" and s_state = "10" else -- MOV A, Rn
+                       '0' when s_opcode = "0011" and s_state = "10" else -- MOV Rn, A
+                       '1' when s_opcode = "0001" and s_state = "10" else -- LD A, I
+                       '0';
+
+    s_reg_bank_write_enable <= '0' when s_opcode = "0101" and s_state = "10" else -- ADD A, Rn
+                               '0' when s_opcode = "0110" and s_state = "10" else -- SUB A, Rn
+                               '0' when s_opcode = "0111" and s_state = "10" else -- ADDI A, I
+                               '0' when s_opcode = "0100" and s_state = "10" else -- CMPI A, I
+                               '0' when s_opcode = "0010" and s_state = "10" else -- MOV A, Rn
+                               '1' when s_opcode = "0011" and s_state = "10" else -- MOV Rn, A
+                               '0' when s_opcode = "0001" and s_state = "10" else -- LD A, I
+                               '0';
+
+    s_reg_bank_reg_read_in <= s_register_from_instruction when s_opcode = "0101" and s_state = "10" else -- ADD A, Rn
+                              s_register_from_instruction when s_opcode = "0110" and s_state = "10" else -- SUB A, Rn
+                              s_register_from_instruction when s_opcode = "0010" and s_state = "10" else -- MOV A, Rn
+                              "000";
+
+    s_reg_bank_reg_write_in <= s_register_from_instruction when s_opcode = "0011" and s_state = "10" else -- MOV Rn, A
+                               "000";
 
 end architecture;
