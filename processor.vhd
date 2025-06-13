@@ -61,6 +61,7 @@ architecture a_processor of processor is
             reset : in std_logic;
 
             state_out : out unsigned(1 downto 0);
+            pc_address_in : in unsigned(6 downto 0);
             pc_address_out : out unsigned(6 downto 0);
 
             rom_data_out : out unsigned(15 downto 0)
@@ -101,6 +102,13 @@ architecture a_processor of processor is
     signal s_pc_address_out : unsigned(6 downto 0);
     signal s_reg_0_data, s_reg_1_data, s_reg_2_data, s_reg_3_data, s_reg_4_data : unsigned(15 downto 0);
 
+    signal s_pc_address_in : unsigned(6 downto 0);
+
+    signal s_jump_enable : std_logic;
+    signal s_jump_address : unsigned(6 downto 0);
+
+    signal s_branch_enable : std_logic;
+    signal s_branch_offset_address : unsigned(6 downto 0);
 begin
     register_bank_and_ula_instance: register_bank_and_ula port map (
         clock => clock,
@@ -129,6 +137,7 @@ begin
         clock => clock,
         reset => reset,
         state_out => s_state,
+        pc_address_in => s_pc_address_in,
         pc_address_out => s_pc_address_out,
         rom_data_out => s_rom_data_out
     );
@@ -145,6 +154,20 @@ begin
     s_register_from_instruction <= s_ir_data_out(11 downto 9);
     s_immediate <= "1111" & s_ir_data_out(11 downto 0) when s_ir_data_out(11) = '1' else
                    "0000" & s_ir_data_out(11 downto 0);
+ 
+    s_branch_enable <= '1' when s_opcode = "1001" and s_flag_C = '1' and s_flag_Z = '0' and s_state = "10" else
+                       '1' when s_opcode = "1010" and s_flag_N /= s_flag_V and s_state = "10" else
+                       '0';
+    s_branch_offset_address <= s_ir_data_out(6 downto 0);
+
+    s_jump_enable <= '1' when s_opcode = "1000" and s_state = "10" else
+                     '0';
+
+    s_jump_address <= s_ir_data_out(6 downto 0);
+
+    s_pc_address_in <= s_jump_address when s_jump_enable = '1' else
+                       s_pc_address_out + s_branch_offset_address when s_branch_enable = '1' else
+                       s_pc_address_out + 1;
 
     s_alu_op_selec <= "000" when s_opcode = "0101" else -- ADD A, Rn
                 "001" when s_opcode = "0110" else -- SUB A, Rn

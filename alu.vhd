@@ -63,15 +63,15 @@ begin
               '0';
 
     flag_C <= result_out_17_bits(16) when op_selec = "000" or op_selec = "010" else
-              not result_out_17_bits(16) when op_selec = "001" or op_selec = "011" else
-              '0';
+              not result_out_17_bits(16) when op_selec = "001" or op_selec = "011";
+              -- else '0';
 
     flag_V <= '1' when is_arithmetic = '1' and
             (
                 ((op_selec = "000" or op_selec = "010") and input_A(15) = input_b(15) and aux_result_out(15) /= input_A(15))
                 or
                 ((op_selec = "001" or op_selec = "011") and input_A(15) /= input_b(15) and aux_result_out(15) /= input_A(15))
-            )
-            else '0';
+            );
+            -- else '0';
 
 end architecture;

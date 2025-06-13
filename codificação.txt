@@ -10,6 +10,9 @@ SUB         0110 rrr xxxxxxxxx
 ADDI        0111 cccccccccccc
 JMP         1000 xxxxx aaaaaaa
 
+BHI         1001 xxxxx aaaaaaa
+BLT         1010 xxxxx aaaaaaa
+
 c: imediato em complemento de 2
 r: registrador (o meu processador tem acumulador, logo não preciso diferenciar entre fonte e destino)
 x: ignora

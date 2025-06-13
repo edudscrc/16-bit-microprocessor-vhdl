@@ -9,6 +9,8 @@ entity control_unit is
 
         state_out : out unsigned(1 downto 0);
 
+        pc_address_in : in unsigned(6 downto 0);
+
         pc_address_out : out unsigned(6 downto 0);
 
         rom_data_out : out unsigned(15 downto 0)
@@ -43,7 +45,7 @@ architecture a_control_unit of control_unit is
         );
     end component;
 
-    signal s_pc_address_in, s_pc_address_out : unsigned(6 downto 0);
+    signal s_pc_address_out : unsigned(6 downto 0);
     signal s_pc_write_enable : std_logic;
     
     signal s_state : unsigned(1 downto 0);
@@ -51,16 +53,16 @@ architecture a_control_unit of control_unit is
     signal s_rom_address_in : unsigned(6 downto 0);
     signal s_rom_data_out : unsigned(15 downto 0);
 
-    signal s_opcode : unsigned(3 downto 0);
+    --signal s_opcode : unsigned(3 downto 0);
 
-    signal s_jump_enable : std_logic;
-    signal s_jump_address : unsigned(6 downto 0);
+    --signal s_jump_enable : std_logic;
+    --signal s_jump_address : unsigned(6 downto 0);
 begin
     pc_instance: program_counter port map (
         clock => clock,
         reset => reset,
         write_enable => s_pc_write_enable,
-        address_in => s_pc_address_in,
+        address_in => pc_address_in,
         address_out => s_pc_address_out
     );
 
@@ -77,17 +79,17 @@ begin
     );
 
     -- opcode nos 4 bits MSB
-    s_opcode <= s_rom_data_out(15 downto 12);
+    --s_opcode <= s_rom_data_out(15 downto 12);
 
-    s_jump_enable <= '1' when s_opcode = "1000" and s_state = "10" else
-                     '0';
+--    s_jump_enable <= '1' when s_opcode = "1000" and s_state = "10" else
+  --                   '0';
 
-    s_jump_address <= s_rom_data_out(6 downto 0);
+--    s_jump_address <= s_rom_data_out(6 downto 0);
 
     s_rom_address_in <= s_pc_address_out;
 
-    s_pc_address_in <= s_jump_address when s_jump_enable = '1' else
-                       s_pc_address_out + 1;
+    --s_pc_address_in <= s_jump_address when s_jump_enable = '1' else
+      --                 s_pc_address_out + 1;
 
     s_pc_write_enable <= '1' when s_state = "10" else
                          '0';
