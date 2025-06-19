@@ -1,0 +1,13 @@
+A:  LD A, 0
+    MOV R2, A
+B:  MOV R3, A
+C:  MOV A, R2
+    ADD A, R3
+    MOV R3, A
+D:  MOV A, R2
+    ADDI A, 1
+    MOV R2, A
+E:  CMPI A, 30
+    BLT -7
+F:  MOV A, R3
+    MOV R4, A
