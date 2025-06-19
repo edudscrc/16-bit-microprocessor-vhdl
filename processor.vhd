@@ -167,7 +167,7 @@ begin
 
     s_pc_address_in <= s_jump_address when s_jump_enable = '1' else
                        s_pc_address_out + s_branch_offset_address when s_branch_enable = '1' else
-                       s_pc_address_out + 1;
+                       s_pc_address_out + 1 when s_state = "10";
 
     s_alu_op_selec <= "000" when s_opcode = "0101" else -- ADD A, Rn
                 "001" when s_opcode = "0110" else -- SUB A, Rn

@@ -86,7 +86,7 @@ begin
 
 --    s_jump_address <= s_rom_data_out(6 downto 0);
 
-    s_rom_address_in <= s_pc_address_out;
+    s_rom_address_in <= pc_address_in;
 
     --s_pc_address_in <= s_jump_address when s_jump_enable = '1' else
       --                 s_pc_address_out + 1;
