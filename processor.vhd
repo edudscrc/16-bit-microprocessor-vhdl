@@ -110,6 +110,7 @@ architecture a_processor of processor is
     signal s_reg_bank_reg_read_in : unsigned(2 downto 0);
     signal s_reg_bank_reg_write_in : unsigned(2 downto 0);
 
+
     signal s_alu_result_out : unsigned(15 downto 0);
     signal s_flag_C, s_flag_Z, s_flag_N, s_flag_V : std_logic;
 
@@ -213,7 +214,7 @@ begin
                 "100" when s_opcode = "0010" else -- MOV A, Rn
                 "101" when s_opcode = "0011" else -- MOV Rn, A
                 "110" when s_opcode = "0001" else -- LD A, I
-                "110" when s_opcode = "1011" else -- LW A, [Rn] (Reutilizando LD)
+                "111" when s_opcode = "1011" else -- LW A, [Rn] (Reutilizando LD)
                 "111";
     
     s_ir_write_enable <= '1' when s_state = "00" else

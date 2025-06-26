@@ -83,6 +83,8 @@ architecture a_register_bank_and_ula of register_bank_and_ula is
         );
     end component;
 
+    signal s_accumulator_data_in : unsigned(15 downto 0);
+
     signal s_alu_result_out : unsigned(15 downto 0);
 
     signal s_accumulator_data_out : unsigned(15 downto 0);
@@ -123,7 +125,7 @@ begin
         clock => clock,
         reset => reset,
         write_enable => accumulator_write_enable,
-        data_in => s_alu_result_out,
+        data_in => s_accumulator_data_in,
         data_out => s_accumulator_data_out
     );
 
@@ -135,6 +137,9 @@ begin
     alu_result_out <= s_alu_result_out;
 
     accumulator_data_out <= s_accumulator_data_out;
+
+    s_accumulator_data_in <= immediate when alu_op_selec = "111" else
+                             s_alu_result_out;
 
     reg_0_data <= s_reg_0_data;
     reg_1_data <= s_reg_1_data;
