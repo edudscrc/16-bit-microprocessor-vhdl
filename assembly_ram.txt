@@ -1,0 +1,15 @@
+LD A, 100
+MOV R0, A
+LD A, 20
+MOV R1, A
+MOV A, R0
+SW [R1], A
+LD A, 200
+MOV R0, A
+LD A, 40
+MOV R2, A
+MOV A, R0
+SW [R2], A
+LW A, [R1]
+LW A, [R2]
+JMP 0xE
