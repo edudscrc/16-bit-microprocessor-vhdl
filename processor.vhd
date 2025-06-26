@@ -25,6 +25,8 @@ entity processor is
         flag_N : out std_logic;
         flag_V : out std_logic;
 
+        
+
         alu_result : out unsigned(15 downto 0)
     );
 end entity;
@@ -88,6 +90,16 @@ architecture a_processor of processor is
         );
     end component;
 
+    component register_16_bits is
+        port (
+            clock : in std_logic;
+            reset : in std_logic;
+            write_enable : in std_logic;
+            data_in : in unsigned(15 downto 0);
+            data_out : out unsigned(15 downto 0)
+        );
+    end component;
+
     signal s_ram_address_in : unsigned(6 downto 0);
     signal s_ram_data_out : unsigned(15 downto 0);
     signal s_ram_write_enable : std_logic;
@@ -113,6 +125,8 @@ architecture a_processor of processor is
 
     signal s_alu_result_out : unsigned(15 downto 0);
     signal s_flag_C, s_flag_Z, s_flag_N, s_flag_V : std_logic;
+    signal s_flag_C_aux, s_flag_Z_aux, s_flag_N_aux, s_flag_V_aux : unsigned(15 downto 0);
+    signal s_C, s_Z, s_N, s_V : unsigned(15 downto 0);
 
     signal s_accumulator_data_out : unsigned(15 downto 0);
     signal s_pc_address_out : unsigned(6 downto 0);
@@ -125,6 +139,8 @@ architecture a_processor of processor is
 
     signal s_branch_enable : std_logic;
     signal s_branch_offset_address : unsigned(6 downto 0);
+
+    signal s_write_enable_flags : std_logic;
 begin
     register_bank_and_ula_instance: register_bank_and_ula port map (
         clock => clock,
@@ -174,6 +190,38 @@ begin
         data_out => s_ram_data_out
     );
 
+    reg_Z: register_16_bits port map(
+        clock => clock,
+        reset => reset,
+        write_enable => s_write_enable_flags,
+        data_in => s_flag_Z_aux,
+        data_out => s_Z
+    );
+
+    reg_V: register_16_bits port map(
+        clock => clock,
+        reset => reset,
+        write_enable => s_write_enable_flags,
+        data_in => s_flag_V_aux,
+        data_out => s_V
+    );
+
+    reg_C: register_16_bits port map(
+        clock => clock,
+        reset => reset,
+        write_enable => s_write_enable_flags,
+        data_in => s_flag_C_aux,
+        data_out => s_C
+    );
+
+    reg_N: register_16_bits port map(
+        clock => clock,
+        reset => reset,
+        write_enable => s_write_enable_flags,
+        data_in => s_flag_N_aux,
+        data_out => s_N
+    );
+
     s_opcode <= s_ir_data_out(15 downto 12);
     s_register_from_instruction <= s_ir_data_out(11 downto 9);
     s_immediate <= "1111" & s_ir_data_out(11 downto 0) when s_ir_data_out(11) = '1' else
@@ -190,11 +238,26 @@ begin
                         s_reg_4_data(6 downto 0) when s_register_from_instruction = "100" else
                         "0000000";
 
+    s_write_enable_flags <= '1' when s_opcode = "0100" or s_opcode = "0101" or s_opcode = "0110" or s_opcode = "0111" and s_state = "10" else
+                            '0';
+
     s_ram_write_enable <= '1' when s_opcode = "1100" and s_state = "10" else
                           '0';
+
+    s_flag_N_aux <= "000000000000000" & s_flag_N when s_state = "10" else
+                 "0000000000000000";
+
+    s_flag_Z_aux <= "000000000000000" & s_flag_Z when s_state = "10" else
+                 "0000000000000000";
+
+    s_flag_V_aux <= "000000000000000" & s_flag_V when s_state = "10" else
+                 "0000000000000000";
+
+    s_flag_C_aux <= "000000000000000" & s_flag_C when s_state = "10" else
+                 "0000000000000000";
  
-    s_branch_enable <= '1' when s_opcode = "1001" and s_flag_C = '1' and s_flag_Z = '0' and s_state = "10" else
-                       '1' when s_opcode = "1010" and s_flag_N /= s_flag_V and s_state = "10" else
+    s_branch_enable <= '1' when s_opcode = "1001" and s_C = "0000000000000001" and s_Z = "0000000000000000" and s_state = "10" else
+                       '1' when s_opcode = "1010" and s_N /= s_V and s_state = "10" else
                        '0';
     s_branch_offset_address <= s_ir_data_out(6 downto 0);
 
@@ -258,6 +321,8 @@ begin
 
     s_reg_bank_reg_write_in <= s_register_from_instruction when s_opcode = "0011" and s_state = "10" else -- MOV Rn, A
                                "000";
+
+    
 
     state <= s_state;
     ir_data <= s_ir_data_out;

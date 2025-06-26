@@ -1,19 +1,22 @@
 [*]
-[*] GTKWave Analyzer v3.3.104 (w)1999-2020 BSI
-[*] Wed Jun 11 02:20:37 2025
+[*] GTKWave Analyzer v3.3.123 (w)1999-2025 BSI
+[*] Thu Jun 26 20:07:55 2025
 [*]
 [dumpfile] "/home/edudscrc/repos/16-bit-microprocessor-vhdl/processor_tb.ghw"
-[dumpfile_mtime] "Wed Jun 11 02:18:52 2025"
-[dumpfile_size] 17336
+[dumpfile_mtime] "Thu Jun 26 20:07:16 2025"
+[dumpfile_size] 625312
 [savefile] "/home/edudscrc/repos/16-bit-microprocessor-vhdl/debug.gtkw"
-[timestart] 0
-[size] 2560 1356
-[pos] -2611 -411
-*-29.847515 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[timestart] 84400000
+[size] 1906 996
+[pos] -1 -1
+*-26.547516 1249200000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] top.
 [treeopen] top.processor_tb.
-[sst_width] 217
-[signals_width] 206
+[treeopen] top.processor_tb.uut.
+[treeopen] top.processor_tb.uut.ram_instance.
+[treeopen] top.processor_tb.uut.ram_instance.content_ram.
+[sst_width] 284
+[signals_width] 301
 [sst_expanded] 1
 [sst_vpaned_height] 414
 @28
@@ -30,5 +33,11 @@ top.processor_tb.clock
 #{top.processor_tb.reg_4_data[15:0]} top.processor_tb.reg_4_data[15] top.processor_tb.reg_4_data[14] top.processor_tb.reg_4_data[13] top.processor_tb.reg_4_data[12] top.processor_tb.reg_4_data[11] top.processor_tb.reg_4_data[10] top.processor_tb.reg_4_data[9] top.processor_tb.reg_4_data[8] top.processor_tb.reg_4_data[7] top.processor_tb.reg_4_data[6] top.processor_tb.reg_4_data[5] top.processor_tb.reg_4_data[4] top.processor_tb.reg_4_data[3] top.processor_tb.reg_4_data[2] top.processor_tb.reg_4_data[1] top.processor_tb.reg_4_data[0]
 #{top.processor_tb.accumulator_data[15:0]} top.processor_tb.accumulator_data[15] top.processor_tb.accumulator_data[14] top.processor_tb.accumulator_data[13] top.processor_tb.accumulator_data[12] top.processor_tb.accumulator_data[11] top.processor_tb.accumulator_data[10] top.processor_tb.accumulator_data[9] top.processor_tb.accumulator_data[8] top.processor_tb.accumulator_data[7] top.processor_tb.accumulator_data[6] top.processor_tb.accumulator_data[5] top.processor_tb.accumulator_data[4] top.processor_tb.accumulator_data[3] top.processor_tb.accumulator_data[2] top.processor_tb.accumulator_data[1] top.processor_tb.accumulator_data[0]
 #{top.processor_tb.alu_result[15:0]} top.processor_tb.alu_result[15] top.processor_tb.alu_result[14] top.processor_tb.alu_result[13] top.processor_tb.alu_result[12] top.processor_tb.alu_result[11] top.processor_tb.alu_result[10] top.processor_tb.alu_result[9] top.processor_tb.alu_result[8] top.processor_tb.alu_result[7] top.processor_tb.alu_result[6] top.processor_tb.alu_result[5] top.processor_tb.alu_result[4] top.processor_tb.alu_result[3] top.processor_tb.alu_result[2] top.processor_tb.alu_result[1] top.processor_tb.alu_result[0]
+@28
+top.processor_tb.flag_v
+top.processor_tb.flag_n
+top.processor_tb.flag_z
+@29
+top.processor_tb.flag_c
 [pattern_trace] 1
 [pattern_trace] 0

@@ -33,7 +33,7 @@ architecture a_processor_tb of processor_tb is
         );
     end component;
 
-    constant period_time : time := 100 ns;
+    constant period_time : time := 10 ns;
     signal finished : std_logic := '0';
 
     signal clock, reset: std_logic;
@@ -83,7 +83,7 @@ begin
 
     sim_time_proc: process
     begin
-        wait for 10 us;
+        wait for 50 us;
         finished <= '1';
         wait;
     end process sim_time_proc;
