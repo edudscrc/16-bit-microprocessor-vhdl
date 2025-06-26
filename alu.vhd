@@ -29,13 +29,14 @@ begin
     is_arithmetic <= '1' when op_selec = "000" or op_selec = "001" or op_selec = "010" or op_selec = "011" else
                      '0';
 
-    -- ADD A, Rn = 000
-    -- SUB A, Rn = 001
-    -- ADDI A, I = 010
-    -- CMPI A, I = 011
-    -- MOV A, Rn = 100
-    -- MOV Rn, A = 101
-    -- LD A, I   = 110 
+    -- ADD A, Rn  = 000
+    -- SUB A, Rn  = 001
+    -- ADDI A, I  = 010
+    -- CMPI A, I  = 011
+    -- MOV A, Rn  = 100
+    -- MOV Rn, A  = 101
+    -- LD A, I    = 110 
+    -- LW A, [Rn] = 110
 
     aux_result_out <= input_A + input_b when op_selec = "000" else
                       input_A - input_b when op_selec = "001" else

@@ -1,6 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.numeric_std_all;
+use ieee.numeric_std.all;
 
 entity ram is
     port (
@@ -24,5 +24,5 @@ begin
             end if;
         end if;
     end process;
-    data_out <= content_ram(to_integer(address));
+    data_out <= content_ram(to_integer(address_in));
 end architecture;

@@ -78,6 +78,21 @@ architecture a_processor of processor is
         );
     end component;
 
+    component ram is
+        port (
+            clock : in std_logic;
+            address_in : in unsigned(6 downto 0);
+            write_enable : std_logic;
+            data_in : in unsigned(15 downto 0);
+            data_out : out unsigned(15 downto 0)
+        );
+    end component;
+
+    signal s_ram_address_in : unsigned(6 downto 0);
+    signal s_ram_data_out : unsigned(15 downto 0);
+    signal s_ram_write_enable : std_logic;
+    signal s_mux_ram_or_immediate : unsigned(15 downto 0);
+
     signal s_rom_data_out : unsigned(15 downto 0);
     signal s_ir_data_out : unsigned(15 downto 0);
     signal s_state : unsigned(1 downto 0);
@@ -119,7 +134,7 @@ begin
         mux_immediate => s_mux_immediate,
         reg_bank_reg_read_in => s_reg_bank_reg_read_in,
         reg_bank_reg_write_in => s_reg_bank_reg_write_in,
-        immediate => s_immediate,
+        immediate => s_mux_ram_or_immediate,
         flag_C => s_flag_C,
         flag_Z => s_flag_Z,
         flag_N => s_flag_N,
@@ -150,10 +165,32 @@ begin
         data_out => s_ir_data_out
     );
 
+    ram_instance: ram port map (
+        clock => clock,
+        address_in => s_ram_address_in,
+        write_enable => s_ram_write_enable,
+        data_in => s_accumulator_data_out,
+        data_out => s_ram_data_out
+    );
+
     s_opcode <= s_ir_data_out(15 downto 12);
     s_register_from_instruction <= s_ir_data_out(11 downto 9);
     s_immediate <= "1111" & s_ir_data_out(11 downto 0) when s_ir_data_out(11) = '1' else
                    "0000" & s_ir_data_out(11 downto 0);
+
+    -- RAM.data_out quando LW
+    s_mux_ram_or_immediate <= s_ram_data_out when s_opcode = "1011" else
+                              s_immediate;
+    
+    s_ram_address_in <= s_reg_0_data(6 downto 0) when s_register_from_instruction = "000" else
+                        s_reg_1_data(6 downto 0) when s_register_from_instruction = "001" else
+                        s_reg_2_data(6 downto 0) when s_register_from_instruction = "010" else
+                        s_reg_3_data(6 downto 0) when s_register_from_instruction = "011" else
+                        s_reg_4_data(6 downto 0) when s_register_from_instruction = "100" else
+                        "0000000";
+
+    s_ram_write_enable <= '1' when s_opcode = "1100" and s_state = "10" else
+                          '0';
  
     s_branch_enable <= '1' when s_opcode = "1001" and s_flag_C = '1' and s_flag_Z = '0' and s_state = "10" else
                        '1' when s_opcode = "1010" and s_flag_N /= s_flag_V and s_state = "10" else
@@ -176,6 +213,7 @@ begin
                 "100" when s_opcode = "0010" else -- MOV A, Rn
                 "101" when s_opcode = "0011" else -- MOV Rn, A
                 "110" when s_opcode = "0001" else -- LD A, I
+                "110" when s_opcode = "1011" else -- LW A, [Rn] (Reutilizando LD)
                 "111";
     
     s_ir_write_enable <= '1' when s_state = "00" else
@@ -188,6 +226,8 @@ begin
                                   '1' when s_opcode = "0010" and s_state = "10" else -- MOV A, Rn
                                   '0' when s_opcode = "0011" and s_state = "10" else -- MOV Rn, A
                                   '1' when s_opcode = "0001" and s_state = "10" else -- LD A, I
+                                  '1' when s_opcode = "1011" and s_state = "10" else -- LW A, [Rn]
+                                  '0' when s_opcode = "1100" and s_state = "10" else -- SW [Rn], A
                                   '0';
 
     s_mux_immediate <= '0' when s_opcode = "0101" and s_state = "10" else -- ADD A, Rn
@@ -211,6 +251,8 @@ begin
     s_reg_bank_reg_read_in <= s_register_from_instruction when s_opcode = "0101" and s_state = "10" else -- ADD A, Rn
                               s_register_from_instruction when s_opcode = "0110" and s_state = "10" else -- SUB A, Rn
                               s_register_from_instruction when s_opcode = "0010" and s_state = "10" else -- MOV A, Rn
+                              s_register_from_instruction when s_opcode = "1011" and s_state = "10" else -- LW A, [Rn]
+                              s_register_from_instruction when s_opcode = "1100" and s_state = "10" else -- SW, [Rn], A
                               "000";
 
     s_reg_bank_reg_write_in <= s_register_from_instruction when s_opcode = "0011" and s_state = "10" else -- MOV Rn, A
