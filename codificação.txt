@@ -16,6 +16,8 @@ BLT         1010 xxxxx aaaaaaa
 LW A, [Rn]  1011 rrr xxxxxxxxx
 SW [Rn], A  1100 rrr xxxxxxxxx
 
+DEC A       1101 xxxxxxxxxxxx
+
 c: imediato em complemento de 2
 r: registrador (o meu processador tem acumulador, logo não preciso diferenciar entre fonte e destino)
 x: ignora

@@ -25,8 +25,6 @@ entity processor is
         flag_N : out std_logic;
         flag_V : out std_logic;
 
-        
-
         alu_result : out unsigned(15 downto 0)
     );
 end entity;
@@ -38,7 +36,7 @@ architecture a_processor of processor is
             reset : in std_logic;
             reg_bank_write_enable : in std_logic;
             accumulator_write_enable : in std_logic;
-            alu_op_selec : in unsigned (2 downto 0);
+            alu_op_selec : in unsigned (3 downto 0);
             mux_immediate : in std_logic;
             reg_bank_reg_read_in : in unsigned(2 downto 0);
             reg_bank_reg_write_in : in unsigned(2 downto 0);
@@ -117,7 +115,7 @@ architecture a_processor of processor is
     signal s_opcode : unsigned(3 downto 0);
     signal s_register_from_instruction : unsigned(2 downto 0);
     signal s_immediate : unsigned(15 downto 0);
-    signal s_alu_op_selec : unsigned(2 downto 0);
+    signal s_alu_op_selec : unsigned(3 downto 0);
 
     signal s_reg_bank_reg_read_in : unsigned(2 downto 0);
     signal s_reg_bank_reg_write_in : unsigned(2 downto 0);
@@ -238,7 +236,7 @@ begin
                         s_reg_4_data(6 downto 0) when s_register_from_instruction = "100" else
                         "0000000";
 
-    s_write_enable_flags <= '1' when s_opcode = "0100" or s_opcode = "0101" or s_opcode = "0110" or s_opcode = "0111" and s_state = "10" else
+    s_write_enable_flags <= '1' when (s_opcode = "0100" or s_opcode = "0101" or s_opcode = "0110" or s_opcode = "0111" )and s_state = "10" else
                             '0';
 
     s_ram_write_enable <= '1' when s_opcode = "1100" and s_state = "10" else
@@ -270,15 +268,16 @@ begin
                        s_pc_address_out + s_branch_offset_address when s_branch_enable = '1' else
                        s_pc_address_out + 1 when s_state = "10";
 
-    s_alu_op_selec <= "000" when s_opcode = "0101" else -- ADD A, Rn
-                "001" when s_opcode = "0110" else -- SUB A, Rn
-                "010" when s_opcode = "0111" else -- ADDI A, I
-                "011" when s_opcode = "0100" else -- CMPI A, I
-                "100" when s_opcode = "0010" else -- MOV A, Rn
-                "101" when s_opcode = "0011" else -- MOV Rn, A
-                "110" when s_opcode = "0001" else -- LD A, I
-                "111" when s_opcode = "1011" else -- LW A, [Rn] (Reutilizando LD)
-                "111";
+    s_alu_op_selec <= "0000" when s_opcode = "0101" else -- ADD A, Rn
+                "0001" when s_opcode = "0110" else -- SUB A, Rn
+                "0010" when s_opcode = "0111" else -- ADDI A, I
+                "0011" when s_opcode = "0100" else -- CMPI A, I
+                "0100" when s_opcode = "0010" else -- MOV A, Rn
+                "0101" when s_opcode = "0011" else -- MOV Rn, A
+                "0110" when s_opcode = "0001" else -- LD A, I
+                "0111" when s_opcode = "1011" else -- LW A, [Rn] (Reutilizando LD)
+                "1000" when s_opcode = "1101" else -- DEC A
+                "1001";
     
     s_ir_write_enable <= '1' when s_state = "00" else
                          '0';
@@ -292,6 +291,7 @@ begin
                                   '1' when s_opcode = "0001" and s_state = "10" else -- LD A, I
                                   '1' when s_opcode = "1011" and s_state = "10" else -- LW A, [Rn]
                                   '0' when s_opcode = "1100" and s_state = "10" else -- SW [Rn], A
+                                  '1' when s_opcode = "1101" and s_state = "10" else -- DEC A
                                   '0';
 
     s_mux_immediate <= '0' when s_opcode = "0101" and s_state = "10" else -- ADD A, Rn
@@ -301,6 +301,7 @@ begin
                        '0' when s_opcode = "0010" and s_state = "10" else -- MOV A, Rn
                        '0' when s_opcode = "0011" and s_state = "10" else -- MOV Rn, A
                        '1' when s_opcode = "0001" and s_state = "10" else -- LD A, I
+                       '0' when s_opcode = "1101" and s_state = "10" else -- DEC A
                        '0';
 
     s_reg_bank_write_enable <= '0' when s_opcode = "0101" and s_state = "10" else -- ADD A, Rn
@@ -310,6 +311,7 @@ begin
                                '0' when s_opcode = "0010" and s_state = "10" else -- MOV A, Rn
                                '1' when s_opcode = "0011" and s_state = "10" else -- MOV Rn, A
                                '0' when s_opcode = "0001" and s_state = "10" else -- LD A, I
+                               '0' when s_opcode = "1101" and s_state = "10" else -- DEC A
                                '0';
 
     s_reg_bank_reg_read_in <= s_register_from_instruction when s_opcode = "0101" and s_state = "10" else -- ADD A, Rn

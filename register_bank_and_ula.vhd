@@ -10,7 +10,7 @@ entity register_bank_and_ula is
         reg_bank_write_enable : in std_logic;
         accumulator_write_enable : in std_logic;
 
-        alu_op_selec : in unsigned (2 downto 0);
+        alu_op_selec : in unsigned (3 downto 0);
         mux_immediate : in std_logic;
 
         reg_bank_reg_read_in : in unsigned(2 downto 0);
@@ -62,7 +62,7 @@ architecture a_register_bank_and_ula of register_bank_and_ula is
             input_A : in unsigned (15 downto 0);
             input_b : in unsigned (15 downto 0);
 
-            op_selec : in unsigned (2 downto 0);
+            op_selec : in unsigned (3 downto 0);
 
             flag_C : out std_logic;
             flag_Z : out std_logic;
@@ -138,7 +138,7 @@ begin
 
     accumulator_data_out <= s_accumulator_data_out;
 
-    s_accumulator_data_in <= immediate when alu_op_selec = "111" else
+    s_accumulator_data_in <= immediate when alu_op_selec = "0111" else
                              s_alu_result_out;
 
     reg_0_data <= s_reg_0_data;

@@ -1,0 +1,80 @@
+0:  LD A, 0  	# Carrega os valores nos endereços correspondentes (1 no 1, 2 no 2, ..., 32 no 32)
+1:  ADDI A, 1
+2:  MOV R0, A
+3:  SW [R0], A
+4:  CMPI A, 32
+5:  BLT -4
+6:  LD A, 2  	# Zera múltiplos de 2
+7:  ADDI A, 2
+8:  MOV R0, A
+9:  LD A, 0
+10: SW [R0], A
+11: MOV A, R0
+12: CMPI A, 32
+13: BLT -6
+14: LD A, 3  	# Zera múltiplos de 3
+15: ADDI A, 3
+16: MOV R0, A
+17: LD A, 0
+18: SW [R0], A
+19: MOV A, R0
+20: CMPI A, 32
+21: BLT -6
+22: LD A, 5  	# Zera múltiplos de 5
+23: ADDI A, 5
+24: MOV R0, A
+25: LD A, 0
+26: SW [R0], A
+27: MOV A, R0
+28: CMPI A, 32
+29: BLT -6
+30: LD A, 7  	# Zera múltiplos de 7
+31: ADDI A, 7
+32: MOV R0, A
+33: LD A, 0
+34: SW [R0], A
+35: MOV A, R0
+36: CMPI A, 32
+37: BLT -6
+38: LD A, 11 	# Zera múltiplos de 11
+39: ADDI A, 11
+40: MOV R0, A
+41: LD A, 0
+42: SW [R0], A
+43: MOV A, R0
+44: CMPI A, 32
+45: BLT -6
+46: LD A, 13  	# Zera múltiplos de 13
+47: ADDI A, 13
+48: MOV R0, A
+49: LD A, 0
+50: SW [R0], A
+51: MOV A, R0
+52: CMPI A, 32
+53: BLT -6
+54: LD A, 17  	# Zera múltiplos de 17
+55: ADDI A, 17
+56: MOV R0, A
+57: LD A, 0
+58: SW [R0], A
+59: MOV A, R0
+60: CMPI A, 32
+61: BLT -6
+62: LD A, 32
+63: MOV R2, A
+64: LD A, 1
+65: ADDI A, 1
+66: MOV R0, A
+67: LW A, [R0]
+68: CMPI A, 0   # é primo?
+69: BHI +8
+70: MOV A, R2
+71: DEC A
+72: CMPI A, 1   # fim do loop?
+73: BLT +6
+74: MOV R2, A
+75: MOV A, R0
+76: JMP 65
+77: MOV R1, A
+78: JMP 70
+79: JMP 79
