@@ -26,7 +26,7 @@ begin
     input_A_17_bits <= '0' & input_A;
     input_b_17_bits <= '0' & input_b;
 
-    is_arithmetic <= '1' when op_selec = "0000" or op_selec = "0001" or op_selec = "0010" or op_selec = "0011" else
+    is_arithmetic <= '1' when op_selec = "0000" or op_selec = "0001" or op_selec = "0010" or op_selec = "0011" or op_selec = "1000" else
                      '0';
 
     -- ADD A, Rn  = 0000
@@ -69,14 +69,14 @@ begin
               '0';
 
     flag_C <= result_out_17_bits(16) when op_selec = "0000" or op_selec = "0010" else
-              not result_out_17_bits(16) when op_selec = "0001" or op_selec = "0011"
+              not result_out_17_bits(16) when op_selec = "0001" or op_selec = "0011" or op_selec = "1000"
               else '0';
 
     flag_V <= '1' when is_arithmetic = '1' and
             (
                 ((op_selec = "0000" or op_selec = "0010") and input_A(15) = input_b(15) and aux_result_out(15) /= input_A(15))
                 or
-                ((op_selec = "0001" or op_selec = "0011") and input_A(15) /= input_b(15) and aux_result_out(15) /= input_A(15))
+                ((op_selec = "0001" or op_selec = "0011" or op_selec = "1000") and input_A(15) /= input_b(15) and aux_result_out(15) /= input_A(15))
             )
             else '0';
 
